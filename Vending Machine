@@ -1,0 +1,32 @@
+pragma solidity ^0.8.19;
+
+contract VendingMachine{
+
+	struct Refreshment{
+		string nameRefreshment;
+		uint256 priceRefreshment;
+		bool Paid;
+	}
+
+	mapping(uint => Refreshment) Refreshments;
+
+	function createRefreshment(uint256 idRefreshment, string memory _nameRefreshment, uint256 _priceRefreshment)public{
+		Refreshment storage newRefreshment = Refreshments[idRefreshment];
+		
+		newRefreshment.nameRefreshment = _nameRefreshment;
+		newRefreshment.priceRefreshment = _priceRefreshment;
+		newRefreshment.Paid = false;
+	}
+
+	function BuyRefreshment(uint256 idRefreshment) payable public{
+		require(msg.value == Refreshments[idRefreshment].priceRefreshment, "Tienes que enviar la cantidad exacta de ETH");
+		
+		Refreshments[idRefreshment].Paid = true;
+		payable(msg.sender).transfer(msg.value);	
+	}
+	
+	function getRefreshmentState(uint256 idRefreshment) public view returns(Refreshment memory infoRefreshment){
+		infoRefreshment = Refreshments[idRefreshment];
+		return infoRefreshment;
+	}		
+}	
