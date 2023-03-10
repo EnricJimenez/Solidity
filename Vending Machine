@@ -19,7 +19,7 @@ contract VendingMachine{
 	}
 
 	function BuyRefreshment(uint256 idRefreshment) payable public{
-		require(msg.value == Refreshments[idRefreshment].priceRefreshment, "Tienes que enviar la cantidad exacta de ETH");
+		require(msg.value == Refreshments[idRefreshment].priceRefreshment, "You have to send the exact amount of ETH");
 		
 		Refreshments[idRefreshment].Paid = true;
 		payable(msg.sender).transfer(msg.value);	
